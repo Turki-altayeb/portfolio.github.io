@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hajj & Flights Analysis | Turki Altayeb</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060b14;
+    --surface: #0d1626;
+    --surface2: #131f35;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --text: #e8f0fe;
+    --muted: #64748b;
+    --border: rgba(0,212,255,0.15);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.1s; }
+  .cursor-ring { width: 36px; height: 36px; border: 1.5px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transition: all 0.15s ease; opacity: 0.6; }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(6,11,20,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: none;
+  }
+
+  .nav-back {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    cursor: none;
+  }
+  .nav-back:hover { color: var(--accent); }
+
+  .project-hero {
+    padding: 140px 60px 80px;
+    position: relative; z-index: 1;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .breadcrumb {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .breadcrumb span { color: var(--accent); }
+
+  .project-hero h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.2s forwards;
+  }
+
+  .project-hero p {
+    max-width: 560px;
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 1rem;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.4s forwards;
+  }
+
+  .meta-row {
+    display: flex; gap: 48px; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.5s forwards;
+  }
+
+  .meta-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .meta-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .project-content {
+    position: relative; z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 60px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 60px;
+  }
+
+  .dashboard-wrapper {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 48px;
+    background: var(--surface);
+  }
+
+  .dashboard-label {
+    padding: 14px 20px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .dashboard-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  iframe {
+    width: 100%;
+    height: 520px;
+    border: none;
+    display: block;
+  }
+
+  .content-block {
+    margin-bottom: 48px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: all 0.6s;
+  }
+  .content-block.visible { opacity: 1; transform: translateY(0); }
+
+  .block-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .insight-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+
+  .insight-list li {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 16px;
+    background: var(--surface);
+    border-left: 2px solid var(--accent);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text);
+    transition: background 0.2s;
+  }
+  .insight-list li:hover { background: var(--surface2); }
+
+  .insight-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 28px;
+    margin-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: var(--accent); }
+
+  .stat-num {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+
+  .tools-list { display: flex; flex-direction: column; gap: 2px; }
+
+  .tool-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .tool-item:hover { border-color: var(--accent); background: var(--surface2); }
+
+  .tool-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 28px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+    cursor: none;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .project-hero { padding: 120px 24px 60px; }
+    .project-content { grid-template-columns: 1fr; padding: 60px 24px; }
+    nav { padding: 16px 24px; }
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Turki.dev</a>
+  <a href="index.html" class="nav-back">← Back to Portfolio</a>
+</nav>
+
+<div class="project-hero">
+  <div class="breadcrumb">Work <span>/</span> Hajj & Flights Analysis</div>
+  <h1>Hajj & Flights<br>Analysis</h1>
+  <p>Analyzing the relationship between pilgrims and flight capacity in Saudi Arabia — identifying seasonal trends and capacity planning insights through interactive Power BI dashboards.</p>
+
+  <div class="meta-row">
+    <div class="meta-item">
+      <div class="meta-label">Category</div>
+      <div class="meta-value">Transportation Analytics</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Tools</div>
+      <div class="meta-value">Power BI · Python · Excel</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Type</div>
+      <div class="meta-value">Dashboard · Report</div>
+    </div>
+  </div>
+</div>
+
+<div class="project-content">
+  <div class="main-col">
+
+    <div class="content-block visible">
+      <div class="block-label">Live Dashboard</div>
+      <div class="dashboard-wrapper">
+        <div class="dashboard-label">
+          <div class="dashboard-dot"></div>
+          Interactive Power BI Report
+        </div>
+        <iframe
+          src="https://app.powerbi.com/view?r=eyJrIjoiMGQ2Y2Q3MWUtNTU2YS00MTUzLTkzNjUtNDJmYjUwNjgwY2Q5IiwidCI6ImI0NTNkOTFiLTZhYzEtNGI2MS1iOGI4LTVlNjVlNDIyMjMzZiIsImMiOjl9"
+          allowFullScreen>
+        </iframe>
+      </div>
+      <div class="cta-row">
+        <a href="https://github.com/username/hajj-analysis" class="btn-ghost" target="_blank">↗ View on GitHub</a>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <div class="block-label">Key Insights</div>
+      <ul class="insight-list">
+        <li>
+          <span class="insight-num">01</span>
+          A direct correlation exists between pilgrim numbers and flight frequency, with a near 1:1 scaling pattern during peak Hajj season.
+        </li>
+        <li>
+          <span class="insight-num">02</span>
+          Clear seasonal peaks emerge in the weeks preceding Hajj, with flight demand spiking up to 3x normal volume.
+        </li>
+        <li>
+          <span class="insight-num">03</span>
+          Identified scheduling gaps where available flight capacity does not fully meet pilgrim demand, presenting optimization opportunities for airlines.
+        </li>
+        <li>
+          <span class="insight-num">04</span>
+          Post-Hajj return flights show a congestion window of 5–7 days, suggesting staggered departure strategies could ease pressure.
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="side-col">
+
+    <div class="content-block visible" style="margin-bottom:24px;">
+      <div class="block-label">At a Glance</div>
+      <div class="stat-card">
+        <div class="stat-num">3×</div>
+        <div class="stat-desc">Flight demand spike during peak Hajj season</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5–7</div>
+        <div class="stat-desc">Day congestion window identified post-Hajj</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-desc">Interactive — filters, slicers, drill-through enabled</div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <div class="block-label">Stack</div>
+      <div class="tools-list">
+        <div class="tool-item"><span class="tool-dot"></span> Power BI</div>
+        <div class="tool-item"><span class="tool-dot"></span> Python (Pandas)</div>
+        <div class="tool-item"><span class="tool-dot"></span> Excel</div>
+        <div class="tool-item"><span class="tool-dot"></span> DAX</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    cursor.style.left=mx-5+'px';cursor.style.top=my-5+'px';
+  });
+  function animateRing(){
+    rx+=(mx-rx-18)*0.12;ry+=(my-ry-18)*0.12;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2.5)';ring.style.opacity='0.3';});
+    el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.opacity='0.6';});
+  });
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('visible');});
+  },{threshold:0.1});
+  document.querySelectorAll('.content-block').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
