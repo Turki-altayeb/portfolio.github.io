@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turki Altayeb | Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060b14;
+    --surface: #0d1626;
+    --surface2: #131f35;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --text: #e8f0fe;
+    --muted: #64748b;
+    --border: rgba(0,212,255,0.15);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  body.ar {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+  }
+
+  .cursor { width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform 0.1s; }
+  .cursor-ring { width:36px;height:36px;border:1.5px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all 0.15s ease;opacity:0.6; }
+
+  body::before {
+    content:'';position:fixed;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity:0.4;pointer-events:none;z-index:0;
+  }
+  body::after {
+    content:'';position:fixed;inset:0;
+    background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);
+    background-size:60px 60px;pointer-events:none;z-index:0;
+  }
+
+  /* NAV */
+  nav {
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:16px 60px;
+    display:flex;justify-content:space-between;align-items:center;
+    background:rgba(6,11,20,0.85);backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    gap: 20px;
+  }
+  .nav-logo { font-family:'Space Mono',monospace;font-size:0.85rem;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;cursor:none; }
+  .nav-links { display:flex;gap:28px;list-style:none;flex-wrap:wrap; }
+  .nav-links a { color:var(--muted);text-decoration:none;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.2s;font-family:'Space Mono',monospace;cursor:none; }
+  .nav-links a:hover { color:var(--accent); }
+
+  /* Language toggle */
+  .lang-toggle {
+    display:flex;align-items:center;gap:6px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:2px;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+  .lang-btn {
+    padding:6px 14px;
+    font-family:'Space Mono',monospace;
+    font-size:0.7rem;
+    letter-spacing:0.1em;
+    color:var(--muted);
+    background:transparent;
+    border:none;
+    cursor:pointer;
+    transition:all 0.2s;
+    text-transform:uppercase;
+  }
+  .lang-btn.active { background:var(--accent);color:var(--bg);font-weight:700; }
+  .lang-btn:hover:not(.active) { color:var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding:120px 60px 80px;position:relative;z-index:1;
+  }
+  .hero-tag { font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--accent);letter-spacing:0.3em;text-transform:uppercase;margin-bottom:24px;opacity:0;animation:fadeUp 0.8s 0.2s forwards; }
+  .hero-tag::before { content:'';display:inline-block;width:40px;height:1px;background:var(--accent);vertical-align:middle;margin-right:12px; }
+  .ar .hero-tag::before { margin-right:0;margin-left:12px; }
+  .hero-name { font-size:clamp(4rem,10vw,9rem);font-weight:800;line-height:0.95;letter-spacing:-0.03em;margin-bottom:32px;opacity:0;animation:fadeUp 0.8s 0.4s forwards; }
+  .hero-name .line1 { display:block;color:var(--text); }
+  .hero-name .line2 { display:block;-webkit-text-stroke:1.5px var(--accent);color:transparent; }
+  .hero-desc { max-width:520px;font-size:1rem;color:var(--muted);line-height:1.8;margin-bottom:48px;opacity:0;animation:fadeUp 0.8s 0.6s forwards; }
+  .hero-actions { display:flex;gap:20px;align-items:center;opacity:0;animation:fadeUp 0.8s 0.8s forwards; }
+
+  .btn-primary { display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:var(--accent);color:var(--bg);font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;border-radius:2px;font-weight:700;transition:all 0.2s;cursor:none; }
+  .btn-primary:hover { background:#fff;transform:translateY(-2px); }
+  .btn-ghost { display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border:1px solid var(--border);color:var(--text);font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:all 0.2s;cursor:none; }
+  .btn-ghost:hover { border-color:var(--accent);color:var(--accent); }
+
+  .orb { position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none; }
+  .orb1 { width:500px;height:500px;background:radial-gradient(circle,rgba(0,212,255,0.08),transparent 70%);top:-100px;right:-100px;animation:drift 8s ease-in-out infinite; }
+  .orb2 { width:400px;height:400px;background:radial-gradient(circle,rgba(124,58,237,0.1),transparent 70%);bottom:0;left:200px;animation:drift 10s ease-in-out infinite reverse; }
+
+  /* TICKER */
+  .ticker { position:relative;z-index:1;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:18px 0;background:rgba(0,212,255,0.03); }
+  .ticker-track { display:flex;gap:0;animation:ticker 25s linear infinite;white-space:nowrap; }
+  .ticker-item { display:inline-flex;align-items:center;gap:16px;padding:0 48px;font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase; }
+  .ticker-dot { width:4px;height:4px;border-radius:50%;background:var(--accent); }
+
+  /* SECTIONS */
+  .section { position:relative;z-index:1;padding:120px 60px; }
+  .section-label { font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:60px;display:flex;align-items:center;gap:16px; }
+  .section-label::after { content:'';flex:1;height:1px;background:var(--border); }
+
+  /* ABOUT */
+  .about-grid { display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start; }
+  .about-heading { font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:28px; }
+  .about-heading em { font-style:normal;-webkit-text-stroke:1px var(--accent);color:transparent; }
+  .about-bio { font-size:0.95rem;color:var(--muted);line-height:1.9;margin-bottom:16px; }
+  .about-right { display:flex;flex-direction:column;gap:2px; }
+  .about-stat { background:var(--surface);border:1px solid var(--border);padding:28px 32px;display:flex;align-items:center;gap:24px;transition:border-color 0.2s,background 0.2s; }
+  .about-stat:hover { border-color:var(--accent);background:var(--surface2); }
+  .about-stat-num { font-size:2.2rem;font-weight:800;color:var(--accent);letter-spacing:-0.02em;flex-shrink:0;min-width:64px; }
+  .about-stat-desc { font-size:0.85rem;color:var(--muted);line-height:1.5; }
+  .about-stat-desc strong { display:block;color:var(--text);font-size:0.95rem;margin-bottom:4px; }
+  .about-tags { display:flex;flex-wrap:wrap;gap:8px;margin-top:28px; }
+  .about-tag { font-family:'Space Mono',monospace;font-size:0.65rem;padding:6px 14px;border:1px solid var(--border);border-radius:2px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;transition:border-color 0.2s,color 0.2s; }
+  .about-tag:hover { border-color:var(--accent);color:var(--accent); }
+
+  /* TRAINING */
+  .training-card {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:3px solid var(--accent3);
+    padding:40px 48px;
+    position:relative;
+    overflow:hidden;
+    transition:border-color 0.3s,background 0.3s;
+  }
+  .training-card:hover { background:var(--surface2);border-color:var(--accent3); }
+  .training-card::before {
+    content:'';position:absolute;top:0;right:0;
+    width:200px;height:200px;
+    background:radial-gradient(circle,rgba(245,158,11,0.06),transparent 70%);
+    pointer-events:none;
+  }
+  .training-org {
+    font-family:'Space Mono',monospace;font-size:0.7rem;
+    color:var(--accent3);letter-spacing:0.2em;text-transform:uppercase;
+    margin-bottom:12px;display:flex;align-items:center;gap:10px;
+  }
+  .training-org::before { content:'';width:24px;height:1px;background:var(--accent3); }
+  .ar .training-org::before { display:none; }
+  .training-title { font-size:1.5rem;font-weight:800;margin-bottom:8px;letter-spacing:-0.01em; }
+  .training-duration {
+    font-family:'Space Mono',monospace;font-size:0.7rem;
+    color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;
+    margin-bottom:24px;
+  }
+  .training-desc { font-size:0.92rem;color:var(--muted);line-height:1.8;margin-bottom:28px; }
+  .training-achievements { list-style:none;display:flex;flex-direction:column;gap:10px; }
+  .training-achievements li {
+    display:flex;align-items:flex-start;gap:14px;
+    font-size:0.88rem;color:var(--text);line-height:1.6;
+  }
+  .training-achievements li::before { content:'▸';color:var(--accent3);flex-shrink:0;margin-top:2px; }
+
+  /* CERTIFICATIONS */
+  .certs-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:2px;
+  }
+  .cert-card {
+    background:var(--surface);
+    border:1px solid var(--border);
+    padding:28px 32px;
+    transition:all 0.3s;
+    position:relative;
+    overflow:hidden;
+  }
+  .cert-card::before {
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    transform:scaleX(0);transition:transform 0.3s;
+  }
+  .cert-card:hover::before { transform:scaleX(1); }
+  .cert-card:hover { background:var(--surface2);border-color:var(--border); }
+
+  .cert-issuer {
+    font-family:'Space Mono',monospace;font-size:0.65rem;
+    color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;
+    margin-bottom:10px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .cert-dot { width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0; }
+  .cert-name { font-size:0.95rem;font-weight:700;line-height:1.4;color:var(--text); }
+
+  /* SKILLS */
+  .skills-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2px; }
+  .skill-card { background:var(--surface);padding:32px 28px;border:1px solid transparent;transition:all 0.3s;position:relative;overflow:hidden; }
+  .skill-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform 0.3s; }
+  .skill-card:hover::before { transform:scaleX(1); }
+  .skill-card:hover { background:var(--surface2);border-color:var(--border); }
+  .skill-icon { font-size:1.8rem;margin-bottom:14px;display:block; }
+  .skill-name { font-weight:700;font-size:1rem;margin-bottom:6px; }
+  .skill-level { font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--accent);letter-spacing:0.1em; }
+  .skill-bar { margin-top:14px;height:2px;background:var(--border);border-radius:1px;overflow:hidden; }
+  .skill-fill { height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:1px;width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1); }
+
+  /* PROJECTS */
+  .projects-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:2px; }
+  .project-card { background:var(--surface);border:1px solid transparent;transition:all 0.4s;text-decoration:none;color:var(--text);position:relative;overflow:hidden;display:block;cursor:none; }
+  .project-card::after { content:'→';position:absolute;top:28px;right:28px;font-size:1.2rem;color:var(--accent);opacity:0;transform:translate(-8px,8px);transition:all 0.3s; }
+  .project-card:hover::after { opacity:1;transform:translate(0,0); }
+  .project-card:hover { background:var(--surface2);border-color:var(--border); }
+  .project-placeholder { width:100%;height:220px;background:linear-gradient(135deg,var(--surface2),var(--surface));display:flex;align-items:center;justify-content:center;font-size:3rem; }
+  .project-body { padding:32px; }
+  .project-tags { display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px; }
+  .tag { font-family:'Space Mono',monospace;font-size:0.65rem;padding:4px 10px;border:1px solid var(--border);border-radius:2px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase; }
+  .project-title { font-size:1.3rem;font-weight:700;margin-bottom:12px;line-height:1.3; }
+  .project-desc { font-size:0.9rem;color:var(--muted);line-height:1.7; }
+  .project-footer { padding:20px 32px;border-top:1px solid var(--border);font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase; }
+
+  /* CONTACT */
+  .contact-grid { display:grid;grid-template-columns:1fr 1fr;gap:2px; }
+  .contact-block { background:var(--surface);padding:48px; }
+  .contact-label { font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px; }
+  .contact-value { font-size:1.1rem;font-weight:600;color:var(--text);text-decoration:none;transition:color 0.2s;display:block; }
+  .contact-value:hover { color:var(--accent); }
+
+  footer { position:relative;z-index:1;border-top:1px solid var(--border);padding:32px 60px;display:flex;justify-content:space-between;align-items:center; }
+  .footer-copy { font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--muted);letter-spacing:0.1em; }
+  .footer-accent { font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)} }
+  @keyframes drift { 0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-20px)} }
+  @keyframes ticker { from{transform:translateX(0)}to{transform:translateX(-50%)} }
+  .reveal { opacity:0;transform:translateY(32px);transition:all 0.7s cubic-bezier(0.4,0,0.2,1); }
+  .reveal.visible { opacity:1;transform:translateY(0); }
+
+  /* Arabic overrides */
+  .ar .section-label::after { display:none; }
+  .ar .section-label::before { content:'';flex:1;height:1px;background:var(--border); }
+  .ar .training-achievements li::before { content:'◂'; }
+
+  @media(max-width:900px){
+    .about-grid{grid-template-columns:1fr;gap:40px;}
+    .contact-grid{grid-template-columns:1fr;}
+  }
+  @media(max-width:768px){
+    nav{padding:14px 20px;flex-wrap:wrap;gap:12px;}
+    .nav-links{display:none;}
+    .hero{padding:100px 24px 60px;}
+    .section{padding:80px 24px;}
+    .training-card{padding:28px 24px;}
+    footer{padding:24px;flex-direction:column;gap:8px;text-align:center;}
+    body{cursor:auto;}
+    .cursor,.cursor-ring{display:none;}
+  }
+
+  /* ── CHAT WIDGET ── */
+  .chat-fab {
+    position: fixed;
+    bottom: 32px; right: 32px;
+    width: 56px; height: 56px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: none;
+    z-index: 500;
+    box-shadow: 0 0 0 0 rgba(0,212,255,0.4);
+    animation: fabPulse 2.5s infinite;
+    transition: transform 0.2s, background 0.2s;
+    border: none;
+  }
+  .chat-fab:hover { transform: scale(1.1); background: #fff; }
+  .chat-fab svg { width: 24px; height: 24px; fill: var(--bg); }
+
+  @keyframes fabPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(0,212,255,0.35); }
+    50%      { box-shadow: 0 0 0 12px rgba(0,212,255,0); }
+  }
+
+  .chat-fab-label {
+    position: fixed;
+    bottom: 96px; right: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 499;
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+  .chat-fab-label.hidden { opacity: 0; }
+
+  .chat-window {
+    position: fixed;
+    bottom: 100px; right: 32px;
+    width: 380px;
+    max-height: 520px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex; flex-direction: column;
+    z-index: 500;
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+    overflow: hidden;
+  }
+  .chat-window.open {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .chat-header {
+    padding: 16px 20px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chat-avatar {
+    width: 32px; height: 32px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700;
+    color: var(--bg);
+    flex-shrink: 0;
+  }
+  .chat-header-info { flex: 1; }
+  .chat-header-name {
+    font-size: 0.88rem; font-weight: 700;
+    line-height: 1.2;
+  }
+  .chat-header-status {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem; color: var(--accent);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .chat-status-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 1.5s infinite;
+  }
+  .chat-close {
+    background: none; border: none;
+    color: var(--muted); font-size: 1.2rem;
+    cursor: pointer; padding: 4px;
+    transition: color 0.2s;
+    line-height: 1;
+  }
+  .chat-close:hover { color: var(--text); }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 12px;
+    scroll-behavior: smooth;
+  }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .msg {
+    display: flex; gap: 8px; align-items: flex-end;
+    max-width: 90%;
+  }
+  .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+  .msg.bot  { align-self: flex-start; }
+
+  .msg-bubble {
+    padding: 10px 14px;
+    border-radius: 3px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+  .msg.bot .msg-bubble {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-bottom-left-radius: 0;
+  }
+  .msg.user .msg-bubble {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+    border-bottom-right-radius: 0;
+  }
+
+  .msg-typing .msg-bubble {
+    display: flex; align-items: center; gap: 4px;
+    padding: 12px 16px;
+  }
+  .typing-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--muted);
+    animation: typingBounce 1s infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.15s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes typingBounce {
+    0%,80%,100% { transform: translateY(0); opacity: 0.4; }
+    40%          { transform: translateY(-5px); opacity: 1; }
+  }
+
+  .chat-suggestions {
+    padding: 0 16px 12px;
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .suggestion-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+  .suggestion-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .chat-input-row {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 8px; align-items: center;
+  }
+  .chat-input {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 9px 12px;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .chat-input:focus { border-color: var(--accent); }
+  .chat-input::placeholder { color: var(--muted); }
+  .chat-send {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border: none; border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .chat-send:hover { background: #fff; }
+  .chat-send svg { width: 16px; height: 16px; fill: var(--bg); }
+
+  @media(max-width:480px){
+    .chat-window{width:calc(100vw - 32px);right:16px;bottom:80px;}
+    .chat-fab{bottom:16px;right:16px;}
+    .chat-fab-label{right:16px;bottom:80px;}
+    body.ar .chat-fab { right: auto; left: 32px; }
+    body.ar .chat-fab-label { right: auto; left: 32px; }
+    body.ar .chat-window { right: auto; left: 32px; }
+  }
+</style>
+</head>
+<body id="body">
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">Turki.dev</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home"    data-en="Home"          data-ar="الرئيسية">Home</a></li>
+    <li><a href="#about"   data-en="About Me"       data-ar="عني">About Me</a></li>
+    <li><a href="#training" data-en="Training"      data-ar="التدريب">Training</a></li>
+    <li><a href="#certs"   data-en="Certifications" data-ar="الشهادات">Certifications</a></li>
+    <li><a href="#skills"  data-en="Skills"         data-ar="المهارات">Skills</a></li>
+    <li><a href="#projects" data-en="Work"          data-ar="الأعمال">Work</a></li>
+    <li><a href="#contact" data-en="Contact"        data-ar="تواصل">Contact</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btnEn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" id="btnAr" onclick="setLang('ar')">عربي</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <p class="hero-tag" data-en="Data Scientist — Data Analysis Enthusiast" data-ar="عالم بيانات — متحمس لتحليل البيانات">Data Scientist — Data Analysis Enthusiast</p>
+  <h1 class="hero-name">
+    <span class="line1" data-en="Turki" data-ar="تركي">Turki</span>
+    <span class="line2" data-en="Altayeb" data-ar="الطيب">Altayeb</span>
+  </h1>
+  <p class="hero-desc" data-en="Turning raw data into clear stories. I build interactive dashboards and analytics solutions using Power BI, Python, and SQL — specialized in Data Science with a passion for analysis." data-ar="أحوّل البيانات الخام إلى قصص واضحة. أبني لوحات تحكم تفاعلية وحلول تحليلية باستخدام Power BI وPython وSQL — متخصص في علم البيانات بشغف في التحليل.">
+    Turning raw data into clear stories. I build interactive dashboards and analytics solutions using Power BI, Python, and SQL — specialized in Data Science with a passion for analysis.
+  </p>
+  <div class="hero-actions">
+    <a href="TURKI-ALTAYEB CV.pdf" class="btn-primary" target="_blank" rel="noopener" data-en="↗ View CV" data-ar="↗ عرض السيرة الذاتية">↗ View CV</a>
+    <a href="#projects" class="btn-ghost" data-en="View Work →" data-ar="الأعمال →">View Work →</a>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="ticker-dot"></span> Power BI</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Python</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> SQL</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Data Cleaning</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Excel</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> DAX</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Data Visualization</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> GIS Mapping</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Data Science</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Business Intelligence</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Power BI</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Python</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> SQL</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Data Cleaning</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Excel</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> DAX</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Data Visualization</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> GIS Mapping</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Data Science</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Business Intelligence</span>
+  </div>
+</div>
+
+<!-- ABOUT ME -->
+<section class="section" id="about">
+  <p class="section-label reveal" data-en="About Me" data-ar="عني">About Me</p>
+  <div class="about-grid">
+    <div class="about-left reveal">
+      <h2 class="about-heading" data-en="Data is a story.<br>I help <em>tell it.</em>" data-ar="البيانات قصة.<br>أنا أساعد <em>في روايتها.</em>">Data is a story.<br>I help <em>tell it.</em></h2>
+      <p class="about-bio" data-en="I'm Turki Altayeb, a Data Science gradute with a strong focus on data analysis. I specialize in transforming complex datasets into clear, actionable insights that drive real business decisions." data-ar="أنا تركي الطيب، خريج علم بيانات بتركيز قوي على تحليل البيانات. أتخصص في تحويل مجموعات البيانات المعقدة إلى رؤى واضحة وقابلة للتنفيذ تدعم قرارات الأعمال الحقيقية.">
+        I'm Turki Altayeb, a Data Science student with a strong focus on data analysis. I specialize in transforming complex datasets into clear, actionable insights that drive real business decisions.
+      </p>
+      <p class="about-bio" data-en="I gained hands-on experience through a 6-month cooperative training at the Jeddah Municipality's Data Office, where I delivered city-scale geospatial analysis and contributed to Vision 2030 planning projects." data-ar="اكتسبت خبرة عملية من خلال تدريب تعاوني لمدة 6 أشهر في مكتب البيانات بأمانة جدة، حيث قدمت تحليلاً جغرافياً على مستوى المدينة وساهمت في مشاريع تخطيط رؤية 2030.">
+        I gained hands-on experience through a 6-month cooperative training at the Jeddah Municipality's Data Office, where I delivered city-scale geospatial analysis and contributed to Vision 2030 planning projects.
+      </p>
+      <p class="about-bio" data-en="With hands-on experience in Power BI, Python, SQL, and Excel, I design end-to-end analytics solutions — from raw data cleaning all the way to polished interactive dashboards. I enjoy working on projects where data can genuinely change how people think and operate." data-ar="بخبرة عملية في Power BI وPython وSQL وExcel، أصمم حلول تحليلية متكاملة — من تنظيف البيانات الخام وصولاً إلى لوحات التحكم التفاعلية المصقولة. أستمتع بالعمل في مشاريع يمكن فيها للبيانات أن تغير طريقة تفكير الناس وأسلوب عملهم.">
+        With hands-on experience in Power BI, Python, SQL, and Excel, I design end-to-end analytics solutions — from raw data cleaning all the way to polished interactive dashboards. I enjoy working on projects where data can genuinely change how people think and operate.
+      </p>
+      <p class="about-bio" data-en="When I'm not analyzing data, I'm always learning — exploring new tools, techniques, and ways to make data more accessible and impactful." data-ar="عندما لا  أحلل البيانات، أكون دائماً في حالة تعلم — أستكشف أدوات وتقنيات جديدة وطرقاً لجعل البيانات أكثر سهولة وتأثيراً.">
+        When I'm not analyzing data, I'm always learning — exploring new tools, techniques, and ways to make data more accessible and impactful.
+      </p>
+      <div class="about-tags">
+        <span class="about-tag" data-en="Dashboard Design" data-ar="تصميم لوحات التحكم">Dashboard Design</span>
+        <span class="about-tag" data-en="GIS & Mapping" data-ar="الخرائط والتحليل المكاني">GIS & Mapping</span>
+        <span class="about-tag" data-en="Data Storytelling" data-ar="سرد البيانات">Data Storytelling</span>
+        <span class="about-tag" data-en="Business Intelligence" data-ar="ذكاء الأعمال">Business Intelligence</span>
+        <span class="about-tag" data-en="Urban Data Analysis" data-ar="تحليل بيانات المدن">Urban Data Analysis</span>
+      </div>
+    </div>
+    <div class="about-right reveal">
+      <div class="about-stat">
+        <div class="about-stat-num">6</div>
+        <div class="about-stat-desc">
+          <strong data-en="Months of Training" data-ar="أشهر تدريب">Months of Training</strong>
+          <span data-en="Cooperative training at Jeddah Municipality" data-ar="تدريب تعاوني في أمانة جدة">Cooperative training at Jeddah Municipality</span>
+        </div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-num">8</div>
+        <div class="about-stat-desc">
+          <strong data-en="Certifications" data-ar="شهادات معتمدة">Certifications</strong>
+          <span data-en="From IBM, Jeddah, Satr & Hadaf" data-ar="من IBM وجدة وسطر وهدف">From IBM, Jeddah, Satr & Hadaf</span>
+        </div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-num">3+</div>
+        <div class="about-stat-desc">
+          <strong data-en="Projects Delivered" data-ar="مشاريع مكتملة">Projects Delivered</strong>
+          <span data-en="End-to-end analytics & dashboards" data-ar="تحليلات ولوحات بيانات متكاملة">End-to-end analytics & dashboards</span>
+        </div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-num">25+</div>
+        <div class="about-stat-desc">
+          <strong data-en="Dashboards Built" data-ar="لوحة بيانات مبنية">Dashboards Built</strong>
+          <span data-en="During cooperative training at Jeddah Municipality" data-ar="خلال التدريب التعاوني في أمانة جدة">During cooperative training at Jeddah Municipality</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINING -->
+<section class="section" id="training" style="padding-top:0">
+  <p class="section-label reveal" data-en="Cooperative Training" data-ar="التدريب التعاوني">Cooperative Training</p>
+  <div class="training-card reveal">
+    <div class="training-org" data-en="Jeddah Municipality — Data Office" data-ar="أمانة جدة — مكتب البيانات">Jeddah Municipality — Data Office</div>
+    <div class="training-title" data-en="Data Analyst Intern" data-ar="متدرب تحليل بيانات">Data Analyst Intern</div>
+    <div class="training-duration" data-en="6 Months  ·  Jeddah, Saudi Arabia" data-ar="6 أشهر  ·  جدة، المملكة العربية السعودية">6 Months  ·  Jeddah, Saudi Arabia</div>
+    <p class="training-desc" data-en="Conducted comprehensive city-scale data analysis and geospatial mapping projects supporting Jeddah's urban planning and Vision 2030 infrastructure goals. Key deliverables were presented to senior stakeholders and received official commendation." data-ar="أجريت تحليلاً شاملاً للبيانات على مستوى المدينة ومشاريع خرائط جغرافية مكانية لدعم التخطيط العمراني في جدة وأهداف رؤية 2030. تم عرض المخرجات الرئيسية على كبار أصحاب المصلحة وحصلت على إشادة رسمية.">
+      Conducted comprehensive city-scale data analysis and geospatial mapping projects supporting Jeddah's urban planning and Vision 2030 infrastructure goals. Key deliverables were presented to senior stakeholders and received official commendation.
+    </p>
+    <ul class="training-achievements">
+      <li data-en="Built 25+ Power BI dashboards for Rabigh City's full urban infrastructure — covering stormwater drainage, tree planting, equipment, buildings, road lighting, and excavations across different city departments." data-ar="تم بناء أكثر من 25 لوحة بيانات في Power BI لتحليل البنية التحتية الحضرية الكاملة لمدينة رابغ — تشمل تصريف مياه الأمطار، والتشجير، والمعدات، والمباني، والإضاءة الطرقية، والحفريات لمختلف الأقسام.">
+        Built 25+ Power BI dashboards for Rabigh City's full urban infrastructure — covering stormwater drainage, tree planting, equipment, buildings, road lighting, and excavations across different city departments.
+      </li>
+      <li data-en="Designed an optimized bus route map for Jeddah City in preparation for the FIFA World Cup 2030, mapping mobility corridors and transit coverage." data-ar="تم تصميم خريطة مسارات حافلات محسّنة لمدينة جدة استعداداً لكأس العالم 2030، مع رسم ممرات التنقل وتغطية وسائل النقل.">
+        Designed an optimized bus route map for Jeddah City in preparation for the FIFA World Cup 2030, mapping mobility corridors and transit coverage.
+      </li>
+      <li data-en="Built a geospatial map identifying World Cup event venues and new stadiums across the city, presented to relevant government authorities." data-ar="تم بناء خريطة جغرافية مكانية تحدد أماكن فعاليات كأس العالم والملاعب الجديدة في المدينة، وتم عرضها على الجهات الحكومية المختصة.">
+        Built a geospatial map identifying World Cup event venues and new stadiums across the city, presented to relevant government authorities.
+      </li>
+      <li data-en="Work was presented to senior officials and received positive recognition from the responsible authority." data-ar="تم عرض العمل على المسؤولين الكبار وحظي بتقدير إيجابي من الجهة المختصة.">
+        Work was presented to senior officials and received positive recognition from the responsible authority.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="section" id="certs" style="padding-top:0">
+  <p class="section-label reveal" data-en="Certifications" data-ar="الشهادات">Certifications</p>
+  <div class="certs-grid">
+
+    <div class="cert-card reveal">
+      <div class="cert-issuer"><span class="cert-dot"></span> IBM</div>
+      <div class="cert-name" data-en="Data Science Orientation" data-ar="مقدمة في علم البيانات">Data Science Orientation</div>
+    </div>
+
+    <div class="cert-card reveal">
+      <div class="cert-issuer"><span class="cert-dot"></span> IBM</div>
+      <div class="cert-name" data-en="Excel Basics for Data Analysis" data-ar="أساسيات Excel لتحليل البيانات">Excel Basics for Data Analysis</div>
+    </div>
+
+    <div class="cert-card reveal">
+      <div class="cert-issuer"><span class="cert-dot"></span><span data-en="Hadaf" data-ar="هدف">Hadaf</span></div>
+      <div class="cert-name" data-en="Introduction to Data & Descriptive Analytics" data-ar="مقدمة في البيانات والتحليلات الوصفية">Introduction to Data & Descriptive Analytics</div>
+    </div>
+
+    <div class="cert-card reveal">
+      <div class="cert-issuer"><span class="cert-dot"></span><span data-en="Hadaf" data-ar="هدف">Hadaf</span></div>
+      <div class="cert-name" data-en="Data Analysis" data-ar="تحليل البيانات">Data Analysis</div>
+    </div>
+
+    <div class="cert-card reveal">
+      <div class="cert-issuer"><span class="cert-dot"></span><span data-en="Satr Platform" data-ar="منصة سطر">Satr Platform</span></div>
+      <div class="cert-name" data-en="Power BI" data-ar="Power BI">Power BI</div>
+    </div>
+
+    <div class="cert-card reveal">
+      <div class="cert-issuer"><span class="cert-dot"></span><span data-en="Satr Platform" data-ar="منصة سطر">Satr Platform</span></div>
+      <div class="cert-name" data-en="Python for Data Analysis" data-ar="Python لتحليل البيانات">Python for Data Analysis</div>
+    </div>
+
+    <div class="cert-card reveal">
+      <div class="cert-issuer"><span class="cert-dot"></span><span data-en="Satr Platform" data-ar="منصة سطر">Satr Platform</span></div>
+      <div class="cert-name" data-en="SQL" data-ar="SQL">SQL</div>
+    </div>
+
+    <div class="cert-card reveal">
+      <div class="cert-issuer"><span class="cert-dot"></span><span data-en="Introduction to Data Analysis" data-ar="مقدمة في تحليل البيانات">Introduction to Data Analysis</span></div>
+      <div class="cert-name" data-en="Fundamentals of Data Analysis" data-ar="أساسيات تحليل البيانات">Fundamentals of Data Analysis</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section" id="skills" style="padding-top:0">
+  <p class="section-label reveal" data-en="Technical Skills" data-ar="المهارات التقنية">Technical Skills</p>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <span class="skill-icon">📊</span>
+      <div class="skill-name">Power BI</div>
+      <div class="skill-level" data-en="Advanced" data-ar="متقدم">Advanced</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="92"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🐍</span>
+      <div class="skill-name">Python</div>
+      <div class="skill-level" data-en="Intermediate" data-ar="متوسط">Intermediate</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="78"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🗄️</span>
+      <div class="skill-name">SQL</div>
+      <div class="skill-level" data-en="Advanced" data-ar="متقدم">Advanced</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">📗</span>
+      <div class="skill-name">Excel</div>
+      <div class="skill-level" data-en="Advanced" data-ar="متقدم">Advanced</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🧹</span>
+      <div class="skill-name" data-en="Data Cleaning" data-ar="تنظيف البيانات">Data Cleaning</div>
+      <div class="skill-level" data-en="Advanced" data-ar="متقدم">Advanced</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="88"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">📐</span>
+      <div class="skill-name">DAX</div>
+      <div class="skill-level" data-en="Intermediate" data-ar="متوسط">Intermediate</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🗺️</span>
+      <div class="skill-name" data-en="GIS Mapping" data-ar="الخرائط الجغرافية">GIS Mapping</div>
+      <div class="skill-level" data-en="Intermediate" data-ar="متوسط">Intermediate</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="72"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">📈</span>
+      <div class="skill-name" data-en="Data Visualization" data-ar="تصوير البيانات">Data Visualization</div>
+      <div class="skill-level" data-en="Advanced" data-ar="متقدم">Advanced</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="87"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🔍</span>
+      <div class="skill-name" data-en="Exploratory Analysis" data-ar="التحليل الاستكشافي">Exploratory Analysis</div>
+      <div class="skill-level" data-en="Advanced" data-ar="متقدم">Advanced</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="84"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🧠</span>
+      <div class="skill-name" data-en="Descriptive Analytics" data-ar="التحليلات الوصفية">Descriptive Analytics</div>
+      <div class="skill-level" data-en="Advanced" data-ar="متقدم">Advanced</div>
+      <div class="skill-bar"><div class="skill-fill" data-width="86"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" id="projects" style="padding-top:0">
+  <p class="section-label reveal" data-en="Selected Work" data-ar="الأعمال">Selected Work</p>
+  <div class="projects-grid">
+    <a href="hajj.html" class="project-card reveal">
+      <div class="project-placeholder">✈️</div>
+      <div class="project-body">
+        <div class="project-tags"><span class="tag">Power BI</span><span class="tag">Python</span><span class="tag">Excel</span></div>
+        <div class="project-title" data-en="Hajj & Flights Analysis" data-ar="تحليل الحج والرحلات الجوية">Hajj & Flights Analysis</div>
+        <div class="project-desc" data-en="Analyzed the relationship between pilgrims and flights using Power BI and Python. Interactive dashboards identifying trends during Hajj seasons." data-ar="تحليل العلاقة بين الحجاج والرحلات الجوية باستخدام Power BI وPython مع لوحات تفاعلية لتحديد الاتجاهات خلال موسم الحج.">
+          Analyzed the relationship between pilgrims and flights using Power BI and Python. Interactive dashboards identifying trends during Hajj seasons.
+        </div>
+      </div>
+      <div class="project-footer" data-en="View Project" data-ar="عرض المشروع">View Project</div>
+    </a>
+    <a href="pizza.html" class="project-card reveal">
+      <div class="project-placeholder">🍕</div>
+      <div class="project-body">
+        <div class="project-tags"><span class="tag">Power BI</span><span class="tag">Python</span><span class="tag">Excel</span></div>
+        <div class="project-title" data-en="Pizza Store Analysis" data-ar="تحليل مبيعات البيتزا">Pizza Store Analysis</div>
+        <div class="project-desc" data-en="Interactive dashboard analyzing pizza store sales performance, customer trends, and product insights using Power BI." data-ar="لوحة تحكم تفاعلية لتحليل أداء مبيعات متجر البيتزا واتجاهات العملاء ورؤى المنتجات.">
+          Interactive dashboard analyzing pizza store sales performance, customer trends, and product insights using Power BI.
+        </div>
+      </div>
+      <div class="project-footer" data-en="View Project" data-ar="عرض المشروع">View Project</div>
+    </a>
+    <a href="store-sales.html" class="project-card reveal">
+      <div class="project-placeholder">🏪</div>
+      <div class="project-body">
+        <div class="project-tags"><span class="tag">Power BI</span><span class="tag">Python</span><span class="tag">Excel</span></div>
+        <div class="project-title" data-en="Store Sales Analysis" data-ar="تحليل مبيعات المتجر">Store Sales Analysis</div>
+        <div class="project-desc" data-en="End-to-end data cleaning and visualization pipeline using Python and Power BI, delivering clear sales insights." data-ar="مسار متكامل لتنظيف البيانات والتصور باستخدام Python وPower BI لتقديم رؤى مبيعات واضحة.">
+          End-to-end data cleaning and visualization pipeline using Python and Power BI, delivering clear sales insights.
+        </div>
+      </div>
+      <div class="project-footer" data-en="View Project" data-ar="عرض المشروع">View Project</div>
+    </a>
+
+    <a href="heart-disease.html" class="project-card reveal">
+      <div class="project-placeholder">💖</div>
+      <div class="project-body">
+        <div class="project-tags"><span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Pandas</span><span class="tag">Excel</span></div>  
+        <div class="project-title" data-en="Heart Disease Analysis" data-ar="تحليل أمراض القلب">Heart Disease Analysis</div>
+        <div class="project-desc" data-en="Full ML project on 920 patient records — data exploration, cleaning, visualization, and a prediction model achieving 98% accuracy." data-ar="مشروع تعلم آلي متكامل على 920 سجل مريض — استكشاف وتنظيف وتصور بيانات ونموذج تنبؤي بدقة 98%.">
+          Full ML project on 920 patient records — data exploration, cleaning, visualization, and a prediction model achieving 98% accuracy.
+        </div>
+      </div>
+      <div class="project-footer" data-en="View Project" data-ar="عرض المشروع">View Project</div>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact" style="padding-top:0">
+  <p class="section-label reveal" data-en="Get in Touch" data-ar="تواصل معي">Get in Touch</p>
+  <div class="contact-grid reveal">
+    <div class="contact-block">
+      <div class="contact-label" data-en="Email" data-ar="البريد الإلكتروني">Email</div>
+      <a href="mailto:Turki.aaltayeb@gmail.com" class="contact-value">Turki.aaltayeb@gmail.com</a>
+    </div>
+    <div class="contact-block">
+      <div class="contact-label">LinkedIn</div>
+      <a href="https://www.linkedin.com/in/turki-altayeb-653920280"
+       target="_blank" class="contact-value">linkedin.com/in/turki-altayeb</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2026 Turki Altayeb</div>
+  <div class="footer-accent" data-en="Data Analyst ✦ Jeddah" data-ar="محلل بيانات ✦ جدة">Data Analyst ✦ Jeddah</div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    cursor.style.left=mx-5+'px';cursor.style.top=my-5+'px';
+  });
+  function animateRing(){
+    rx+=(mx-rx-18)*0.12;ry+=(my-ry-18)*0.12;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2.5)';ring.style.transform='scale(1.4)';ring.style.opacity='0.3';});
+    el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.transform='scale(1)';ring.style.opacity='0.6';});
+  });
+
+  // Scroll reveal + skill bars
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        entry.target.querySelectorAll('.skill-fill').forEach(bar=>{ bar.style.width=bar.dataset.width+'%'; });
+        if(entry.target.classList.contains('skill-card')){
+          const bar=entry.target.querySelector('.skill-fill');
+          if(bar) bar.style.width=bar.dataset.width+'%';
+        }
+      }
+    });
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+  // Auto-apply saved language on load — moved after setLang definition
+  // (placeholder, will be called below)
+
+  // Language toggle
+  let currentLang = 'en';
+
+  function setLang(lang){
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    const body = document.getElementById('body');
+    const btnEn = document.getElementById('btnEn');
+    const btnAr = document.getElementById('btnAr');
+
+    if(lang === 'ar'){
+      body.classList.add('ar');
+      body.setAttribute('dir','rtl');
+      body.setAttribute('lang','ar');
+      btnAr.classList.add('active');
+      btnEn.classList.remove('active');
+    } else {
+      body.classList.remove('ar');
+      body.setAttribute('dir','ltr');
+      body.setAttribute('lang','en');
+      btnEn.classList.add('active');
+      btnAr.classList.remove('active');
+    }
+
+    // Update leaf-level elements only (those whose direct text content is translatable)
+    // We process deepest elements first to avoid overwriting nested ones
+    const allEls = Array.from(document.querySelectorAll('[data-en]'));
+    // Sort: deeper elements first
+    allEls.sort((a,b) => {
+      let da=0, db=0, n=a;
+      while(n){da++;n=n.parentElement;}
+      n=b; while(n){db++;n=n.parentElement;}
+      return db-da;
+    });
+
+    const processed = new Set();
+    allEls.forEach(el=>{
+      if(processed.has(el)) return;
+      const val = el.getAttribute('data-'+lang);
+      if(!val) return;
+      // Check if any child also has data-en (nested translatable)
+      const hasTranslatableChild = el.querySelector('[data-en]');
+      if(!hasTranslatableChild){
+        el.innerHTML = val;
+        processed.add(el);
+      }
+    });
+
+    // Now handle parents that have data-en but also have translatable children
+    // These use innerHTML but only if they have no translatable children
+    allEls.forEach(el=>{
+      if(processed.has(el)) return;
+      const val = el.getAttribute('data-'+lang);
+      if(!val) return;
+      el.innerHTML = val;
+      processed.add(el);
+    });
+
+    // Update chat widget text
+    const chatInput = document.getElementById('chatInput');
+    if(chatInput) chatInput.placeholder = lang === 'ar' ? 'اسألني أي شيء...' : 'Ask me anything...';
+    const chatLabel = document.getElementById('chatLabel');
+    if(chatLabel && !chatLabel.classList.contains('hidden'))
+      chatLabel.textContent = lang === 'ar' ? '!اسألني' : 'Ask me anything!';
+    document.querySelectorAll('.suggestion-btn').forEach(btn=>{
+      const v = btn.getAttribute('data-'+lang);
+      if(v) btn.textContent = v;
+    });
+  }
+
+  // Auto-apply saved language now that setLang is defined
+  const savedLang = localStorage.getItem('lang') || 'en';
+  if(savedLang === 'ar') setLang('ar');
+</script>
+<!-- CHAT WIDGET -->
+<div class="chat-fab-label" id="chatLabel" data-en="Ask me anything!" data-ar="اسألني أي شيء!">Ask me anything!</div>
+<button class="chat-fab" id="chatFab" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4C2.9 2 2 2.9 2 4v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+</button>
+
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-avatar">T</div>
+    <div class="chat-header-info">
+      <div class="chat-header-name" data-en="Turki's Assistant" data-ar="مساعد تركي">Turki's Assistant</div>
+      <div class="chat-header-status"><span class="chat-status-dot"></span><span data-en="Online — ask me about Turki" data-ar="متاح — اسألني عن تركي">Online — ask me about Turki</span></div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-suggestions" id="chatSuggestions">
+    <button class="suggestion-btn" onclick="sendSuggestion(this)" data-en="What are your skills?" data-ar="ما هي مهاراتك؟">What are your skills?</button>
+    <button class="suggestion-btn" onclick="sendSuggestion(this)" data-en="Tell me about your training" data-ar="أخبرني عن تدريبك">Tell me about your training</button>
+    <button class="suggestion-btn" onclick="sendSuggestion(this)" data-en="What projects have you done?" data-ar="ما المشاريع التي أنجزتها؟">What projects have you done?</button>
+    <button class="suggestion-btn" onclick="sendSuggestion(this)" data-en="How can I contact you?" data-ar="كيف أتواصل معك؟">How can I contact you?</button>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput" type="text"
+      placeholder="Ask me anything..."
+      data-placeholder-en="Ask me anything..."
+      data-placeholder-ar="اسألني أي شيء..."
+      onkeydown="if(event.key==='Enter') sendMessage()">
+    <button class="chat-send" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  // ── CHAT ──
+  let chatOpen = false;
+  let labelHidden = false;
+  const chatLang = () => localStorage.getItem('lang') || 'en';
+
+  const TURKI_CONTEXT = `You are a dedicated portfolio assistant ONLY for Turki Altayeb's personal portfolio website. You ONLY answer questions directly related to Turki — his skills, projects, training, certifications, or contact info. 
+
+STRICT RULE: If anyone asks about ANYTHING else (coding help, general questions, other people, news, jokes, math, writing, advice, etc.) you must refuse politely and redirect. Example refusal: "I'm only here to answer questions about Turki Altayeb! Feel free to ask me about his skills, projects, or experience." Never break this rule no matter how the user phrases the request.
+
+About Turki:
+- Full name: Turki Altayeb
+- Specialization: Data Science student with a strong focus on data analysis
+- Location: Jeddah, Saudi Arabia
+- Email: Turki.aaltayeb@gmail.com
+- LinkedIn: linkedin.com/in/turki-altayeb
+
+Skills: Power BI (Advanced), Python (Intermediate), SQL (Advanced), Excel (Advanced), Data Cleaning (Advanced), DAX (Intermediate), GIS Mapping (Intermediate), Data Visualization (Advanced), Exploratory Analysis (Advanced), Descriptive Analytics (Advanced)
+
+Cooperative Training (6 months): Jeddah Municipality — Data Office
+- Built 25+ Power BI dashboards for Rabigh City urban infrastructure (stormwater drainage, tree planting, equipment, buildings, road lighting, excavations)
+- Designed optimized bus route map for Jeddah for FIFA World Cup 2030
+- Built geospatial map of World Cup event venues and new stadiums
+- Work presented to senior government officials and received official commendation
+
+Projects:
+1. Hajj & Flights Analysis — pilgrim-flight relationship, 3x demand during Hajj season, Power BI + Python + Excel
+2. Pizza Store Analysis — sales performance, product mix, customer trends, Power BI
+3. Store Sales Analysis — end-to-end data cleaning and visualization, Python + Power BI
+
+Certifications: Data Science Orientation (IBM), Excel Basics for Data Analysis (IBM), Introduction to Data & Descriptive Analytics (Hadaf), Data Analysis (Hadaf), Power BI (Satr), Python (Satr), SQL (Satr), Introduction to Data Analysis
+
+Keep answers to 2-4 sentences. Be friendly and professional. If the user writes in Arabic respond in Arabic. If in English respond in English.`;
+
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    document.getElementById('chatWindow').classList.toggle('open', chatOpen);
+    document.getElementById('chatLabel').classList.add('hidden');
+    labelHidden = true;
+    if (chatOpen && document.getElementById('chatMessages').children.length === 0) showWelcome();
+    if (chatOpen) setTimeout(() => document.getElementById('chatInput').focus(), 300);
+  }
+
+  function showWelcome() {
+    const lang = chatLang();
+    const msg = lang === 'ar'
+  ? 'مرحباً! 👋 أنا مساعد تركي الطيب. اسألني عن مهاراته أو مشاريعه أو تدريبه أو كيفية التواصل معه.'
+  : "Hi there! 👋 I'm Turki's assistant. Ask me about his skills, projects, training, or how to get in touch.";
+    appendMsg('bot', msg);
+  }
+
+  function appendMsg(role, text) {
+    const msgs = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = `msg ${role}`;
+    div.innerHTML = `<div class="msg-bubble">${text}</div>`;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function showTyping() {
+    const msgs = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = 'msg bot msg-typing';
+    div.id = 'typingIndicator';
+    div.innerHTML = `<div class="msg-bubble"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('typingIndicator');
+    if (t) t.remove();
+  }
+
+  function sendSuggestion(btn) {
+    const lang = chatLang();
+    const text = btn.getAttribute('data-' + lang) || btn.textContent;
+    document.getElementById('chatSuggestions').style.display = 'none';
+    processMessage(text);
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    document.getElementById('chatSuggestions').style.display = 'none';
+    processMessage(text);
+  }
+
+  async function processMessage(text) {
+    appendMsg('user', text);
+    showTyping();
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 300,
+          system: TURKI_CONTEXT,
+          messages: [{ role: 'user', content: text }]
+        })
+      });
+      const data = await res.json();
+      removeTyping();
+      const reply = data.content?.[0]?.text || (chatLang() === 'ar' ? 'عذراً، حدث خطأ.' : 'Sorry, something went wrong.');
+      appendMsg('bot', reply);
+    } catch(e) {
+      removeTyping();
+      appendMsg('bot', chatLang() === 'ar' ? 'خطأ في الاتصال. حاول مجدداً.' : 'Connection error. Please try again.');
+    }
+  }
+
+  setTimeout(() => {
+    if (!labelHidden) document.getElementById('chatLabel').classList.add('hidden');
+  }, 5000);
+</script>
+</body>
+</html>
